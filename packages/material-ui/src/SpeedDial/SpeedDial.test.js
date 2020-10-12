@@ -108,6 +108,23 @@ describe('<SpeedDial />', () => {
       expect(handleKeyDown.callCount).to.equal(1);
       expect(handleKeyDown.calledWithMatch({ eventMock })).to.equal(true);
     });
+
+    it('should close when "Escape" is pressed', () => {
+      const onClose = spy();
+      const wrapper = mount(
+        <SpeedDial {...defaultProps} onClose={onClose}>
+          <FakeAction />
+        </SpeedDial>,
+      );
+      const buttonWrapper = wrapper.find('[aria-expanded]').first();
+      const eventMock = 'something-to-match';
+      buttonWrapper.simulate('keyDown', {
+        key: 'Escape',
+        eventMock,
+      });
+      expect(onClose.callCount).to.equal(1);
+      expect(onClose.calledWith(eventMock, 'escapeKeyDown'));
+    });
   });
 
   describe('prop: direction', () => {
